@@ -41,7 +41,7 @@ class LibroAdapter : RecyclerView.Adapter<LibroAdapter.LibroViewHolder>(){
             title.text = libro.titulo
             description.text = libro.descripcion
             genero.text = libro.genero
-            autor.text = libro.genero
+            autor.text = libro.autor
 
     }
 }
