@@ -1,9 +1,10 @@
-package com.example.biblioteca
+package com.example.biblioteca.recyclerview
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
+import com.example.biblioteca.R
 
 class RecyclerViewEjemplo : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")

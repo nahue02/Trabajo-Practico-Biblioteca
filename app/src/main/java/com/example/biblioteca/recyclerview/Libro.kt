@@ -1,4 +1,4 @@
-package com.example.biblioteca
+package com.example.biblioteca.recyclerview
 
 data class Libro(
     val titulo: String,
