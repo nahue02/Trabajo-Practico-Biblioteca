@@ -38,7 +38,9 @@ android {
 
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.5.0')
+    //Firebase Analytics
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    //Firebase Auth
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     implementation 'com.google.firebase:firebase-auth-ktx'
 
