@@ -16,14 +16,15 @@
         >
 
         <TextView
-            android:id="@+id/textView_Email"
+            android:id="@+id/textViewEmail"
+            android:textSize="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Texto"
             />
 
         <Button
-            android:id="@+id/button_Salir"
+            android:id="@+id/buttonSalir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Salir" />
