@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         buttonSalir.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
+            onBackPressed()
         }
     }
 
