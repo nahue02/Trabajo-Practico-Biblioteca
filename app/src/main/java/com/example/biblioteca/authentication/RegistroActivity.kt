@@ -24,7 +24,6 @@ class RegistroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
-
         //En el método onCreate(), inicializa la instancia FirebaseAuth.
         auth = Firebase.auth
 
@@ -41,16 +40,16 @@ class RegistroActivity : AppCompatActivity() {
         val email = editTextEmail.text
         val contrasena = editTextContrasena.text
 
-        buttonRegistrarse.setOnClickListener{
-            if (nombre.isNullOrBlank() || email.isNullOrBlank() || contrasena.isNullOrBlank()){
+        buttonRegistrarse.setOnClickListener {
+            if (nombre.isNullOrBlank() || email.isNullOrBlank() || contrasena.isNullOrBlank()) {
                 alertaCampoVacio()
-            }else {
+            } else {
                 registrarUsuario(email.toString(), contrasena.toString())
             }
         }
     }
 
-    private fun registrarUsuario(email:String, password: String){
+    private fun registrarUsuario(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
