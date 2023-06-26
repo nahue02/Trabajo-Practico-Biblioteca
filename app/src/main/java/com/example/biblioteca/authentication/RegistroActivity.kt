@@ -8,11 +8,11 @@ import android.util.Log
 import android.widget.Toast
 import com.example.biblioteca.MainActivity
 import com.example.biblioteca.R
-import com.example.biblioteca.databinding.ActivityLoginBinding
 import com.example.biblioteca.databinding.ActivityRegistroBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class RegistroActivity : AppCompatActivity() {
@@ -20,6 +20,9 @@ class RegistroActivity : AppCompatActivity() {
 
     //Declara una instancia de FirebaseAuth.
     private lateinit var auth: FirebaseAuth
+
+    //Inicializa una instancia de Cloud Firestore
+    val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +48,26 @@ class RegistroActivity : AppCompatActivity() {
                 alertaCampoVacio()
             } else {
                 registrarUsuario(email.toString(), contrasena.toString())
+                agregarUsuarioDataBase(nombre.toString(), email.toString(), contrasena.toString())
             }
         }
+    }
+
+    private fun agregarUsuarioDataBase(nombre: String, email: String, contrasena: String) {
+        val usuario = hashMapOf(
+            "nombre" to nombre,
+            "email" to email,
+            "contrasena" to contrasena,
+        )
+
+        db.collection("usuarios")
+            .add(usuario)
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding document", e)
+            }
     }
 
     private fun registrarUsuario(email: String, password: String) {
