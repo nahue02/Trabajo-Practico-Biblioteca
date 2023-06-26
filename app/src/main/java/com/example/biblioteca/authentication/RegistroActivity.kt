@@ -45,7 +45,9 @@ class RegistroActivity : AppCompatActivity() {
 
         buttonRegistrarse.setOnClickListener {
             if (nombre.isNullOrBlank() || email.isNullOrBlank() || contrasena.isNullOrBlank()) {
-                alertaCampoVacio()
+                alertaCampoVacio("No pueden haber espacios vacios")
+            } else if (contrasena.length < 6) {
+                alertaCampoVacio("La contraseña no puede tener menos de 6 caracteres")
             } else {
                 registrarUsuario(email.toString(), contrasena.toString())
                 agregarUsuarioDataBase(nombre.toString(), email.toString(), contrasena.toString())
@@ -55,39 +57,39 @@ class RegistroActivity : AppCompatActivity() {
 
     private fun agregarUsuarioDataBase(nombre: String, email: String, contrasena: String) {
         val usuario = hashMapOf(
-            "nombre" to nombre,
-            "email" to email,
-            "contrasena" to contrasena,
+                "nombre" to nombre,
+                "email" to email,
+                "contrasena" to contrasena,
         )
 
         db.collection("usuarios")
-            .add(usuario)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }
+                .add(usuario)
+                .addOnSuccessListener { documentReference ->
+                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error adding document", e)
+                }
     }
 
     private fun registrarUsuario(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "createUserWithEmail:success")
-                    val user = auth.currentUser
-                    updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "createUserWithEmail:success")
+                        val user = auth.currentUser
+                        updateUI(user)
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                        Toast.makeText(
+                                baseContext,
+                                "Authentication failed.",
+                                Toast.LENGTH_SHORT,
+                        ).show()
+                    }
                 }
-            }
     }
 
     private fun updateUI(user: FirebaseUser?) {
@@ -95,11 +97,10 @@ class RegistroActivity : AppCompatActivity() {
         startActivity(i)
     }
 
-    private fun alertaCampoVacio() {
-        val text = "No puede dejar campos en blanco."
+    private fun alertaCampoVacio(mensaje: String) {
         val duration = Toast.LENGTH_SHORT
 
-        val toast = Toast.makeText(this, text, duration)
+        val toast = Toast.makeText(this, mensaje, duration)
         toast.show()
     }
 }

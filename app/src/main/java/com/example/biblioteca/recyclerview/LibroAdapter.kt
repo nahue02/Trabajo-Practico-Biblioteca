@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.biblioteca.R
 
 
-class LibroAdapter : RecyclerView.Adapter<LibroAdapter.LibroViewHolder>(){
+class LibroAdapter : RecyclerView.Adapter<LibroAdapter.LibroViewHolder>() {
 
     var libros = listOf<Libro>()
         set(value) {
@@ -18,8 +18,8 @@ class LibroAdapter : RecyclerView.Adapter<LibroAdapter.LibroViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LibroViewHolder {
         val view = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.item, parent, false)
+                .from(parent.context)
+                .inflate(R.layout.item, parent, false)
         return LibroViewHolder(view)
     }
 
@@ -43,6 +43,6 @@ class LibroAdapter : RecyclerView.Adapter<LibroAdapter.LibroViewHolder>(){
             genero.text = libro.genero
             autor.text = libro.autor
 
+        }
     }
-}
 }
