@@ -1,9 +1,10 @@
 package com.example.biblioteca.authentication.data
 
-class Usuario(
-    val id: Integer,
+data class Usuario(
+    val id: String,
     val nombre: String,
     val email: String,
     val contrasena: String
-
-)
+){
+    constructor(): this("","","","")
+}

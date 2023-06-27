@@ -29,10 +29,5 @@
             android:layout_height="wrap_content"
             android:text="Salir" />
 
-        <include
-            layout="@layout/activity_recycler_view_ejemplo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
