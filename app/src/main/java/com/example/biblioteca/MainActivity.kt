@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         val textViewEmail = binding.textViewEmail
         val buttonSalir = binding.buttonSalir
 
-        textViewEmail.text = user?.displayName
+        textViewEmail.text = user?.email
 
         buttonSalir.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
