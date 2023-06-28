@@ -1,9 +1,8 @@
 package com.example.biblioteca.authentication.data
 
-class Usuario(
-    val id: Integer,
-    val nombre: String,
-    val email: String,
-    val contrasena: String
-
+data class Usuario(
+    val id: String? = null,
+    val nombre: String? = null,
+    val email: String? = null,
+    val contrasena: String? = null
 )

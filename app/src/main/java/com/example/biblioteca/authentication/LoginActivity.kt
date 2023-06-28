@@ -12,6 +12,7 @@ import com.example.biblioteca.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
@@ -20,11 +21,16 @@ class LoginActivity : AppCompatActivity() {
     //Declara una instancia de FirebaseAuth.
     private lateinit var auth: FirebaseAuth
 
+
+    private lateinit var db: FirebaseDatabase
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        //En el método onCreate(), inicializa la instancia FirebaseAuth.
+        db = FirebaseDatabase.getInstance()
+
         auth = Firebase.auth
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -36,9 +42,7 @@ class LoginActivity : AppCompatActivity() {
 
         val editTextEmail = binding.editTextEmail
         val editTextContrasena = binding.editTextContrasena
-
-        val email = editTextEmail.text
-        val contrasena = editTextContrasena.text
+        //
 
         buttonRegistrarse.setOnClickListener {
             val intent = Intent(this, RegistroActivity::class.java)
@@ -46,27 +50,15 @@ class LoginActivity : AppCompatActivity() {
         }
 
         buttonLogin.setOnClickListener {
+            val email = editTextEmail.text
+            val contrasena = editTextContrasena.text
+
             if (email.isNullOrBlank() || contrasena.isNullOrBlank()) {
                 alertaCampoVacio()
             } else {
                 iniciarSesion(email.toString(), contrasena.toString())
             }
         }
-    }
-
-    //Cuando inicialices la actividad, verifica que el usuario haya accedido.
-    public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            reload()
-        }
-    }
-
-    private fun reload() {
-        val i = Intent(this, MainActivity::class.java)
-        startActivity(i)
     }
 
     private fun iniciarSesion(email: String, password: String) {
@@ -82,11 +74,12 @@ class LoginActivity : AppCompatActivity() {
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
                     Toast.makeText(
                         baseContext,
-                        "Email o Contraseña Incorrectos",
+                        "Authentication failed.",
                         Toast.LENGTH_SHORT,
                     ).show()
                 }
             }
+
     }
 
     private fun updateUI(user: FirebaseUser?) {
@@ -102,3 +95,4 @@ class LoginActivity : AppCompatActivity() {
         toast.show()
     }
 }
+

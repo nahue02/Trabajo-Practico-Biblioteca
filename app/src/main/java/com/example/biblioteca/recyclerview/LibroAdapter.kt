@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.biblioteca.R
 
 
-class LibroAdapter : RecyclerView.Adapter<LibroAdapter.LibroViewHolder>(){
+class LibroAdapter : RecyclerView.Adapter<LibroAdapter.LibroViewHolder>() {
 
     var libros = listOf<Libro>()
         set(value) {
@@ -43,6 +43,6 @@ class LibroAdapter : RecyclerView.Adapter<LibroAdapter.LibroViewHolder>(){
             genero.text = libro.genero
             autor.text = libro.autor
 
+        }
     }
-}
 }
