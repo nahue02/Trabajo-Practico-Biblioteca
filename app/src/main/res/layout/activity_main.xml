@@ -25,19 +25,27 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <!-- Contenido principal de la actividad -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/bienvenido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bienvenido"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/textViewEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Texto"
-            android:textSize="30dp" />
+            <TextView
+                android:id="@+id/textViewEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Texto"
+                android:textStyle="bold"
+                android:textSize="35sp" />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/buttonSalir"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Salir" />
+
     </LinearLayout>
 
     <!-- Navigation Drawer -->

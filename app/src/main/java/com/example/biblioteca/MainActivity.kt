@@ -1,25 +1,17 @@
 package com.example.biblioteca
 
-import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toolbar
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.biblioteca.authentication.LoginActivity
-import com.google.firebase.ktx.Firebase
-
-import com.example.biblioteca.databinding.ActivityLoginBinding
 import com.example.biblioteca.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class MainActivity : AppCompatActivity() {
@@ -57,34 +49,28 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_item1 -> {
-                    // Acción para el Item 1
+                    val intent = Intent(this, PerfilActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.nav_item2 -> {
-                    // Acción para el Item 2
+                    val intent = Intent(this, ConfiguracionActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.nav_item3 -> {
-                    // Acción para el Item 2
+                    FirebaseAuth.getInstance().signOut()
+                    irPantallaLogin()
                     true
                 }
                 else -> false
             }
         }
 
-
         val textViewEmail = binding.textViewEmail
-        val buttonSalir = binding.buttonSalir
+        textViewEmail.text = user?.displayName
 
-        textViewEmail.text = user?.email
-
-        buttonSalir.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            irPantallaLogin()
-        }
     }
-
-
 
     public override fun onStart() {
         super.onStart()
@@ -100,6 +86,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
