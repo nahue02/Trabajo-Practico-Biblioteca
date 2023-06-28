@@ -35,6 +35,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         db = FirebaseDatabase.getInstance()
 
         val user = auth.currentUser
+        val userRef = db.reference.child("users").child(user!!.uid)
 
         buttonActualizarDatos.setOnClickListener {
             val nombre = editTextNombre.text.toString()
@@ -42,15 +43,31 @@ class ConfiguracionActivity : AppCompatActivity() {
             val contrasena = editTextContrasena.text.toString()
 
             actualizarUsuarioAuthentication(user, email, contrasena)
+            actualizarUsuarioDatabase(userRef, nombre, email)
         }
 
 
     }
 
-    private fun actualizarUsuarioDatabase()
+    private fun actualizarUsuarioDatabase(
+        userRef: FirebaseDatabase,
+        newName: String,
+        newEmail: String
+    ) {
+
+        val profileUpdatesDatabase = hashMapOf<String, Any>(
+            "username" to newName,
+        )
+
+        userRef.updateChildren(profileUpdatesDatabase)
+    }
 
 
-    private fun actualizarUsuarioAuthentication(user: FirebaseUser?, newEmail: String,  newPassword: String){
+    private fun actualizarUsuarioAuthentication(
+        user: FirebaseUser?,
+        newEmail: String,
+        newPassword: String
+    ) {
         editarEmail(user, newEmail)
         editarContrasena(user, newPassword)
     }
