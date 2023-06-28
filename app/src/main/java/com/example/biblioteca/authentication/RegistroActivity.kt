@@ -13,8 +13,7 @@ import com.example.biblioteca.databinding.ActivityRegistroBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
 class RegistroActivity : AppCompatActivity() {
@@ -24,13 +23,15 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
     //Inicializa una instancia de Cloud Firestore
-    private lateinit var firestore: FirebaseFirestore
+
+    private lateinit var db: FirebaseDatabase
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
 
-        firestore = FirebaseFirestore.getInstance()
+        db = FirebaseDatabase.getInstance()
 
         //En el método onCreate(), inicializa la instancia FirebaseAuth.
         auth = Firebase.auth
@@ -46,44 +47,37 @@ class RegistroActivity : AppCompatActivity() {
 
 
         buttonRegistrarse.setOnClickListener {
-            val nombre = editTextNombre.text
-            val email = editTextEmail.text
-            val contrasena = editTextContrasena.text
+            val nombre = editTextNombre.text.toString()
+            val email = editTextEmail.text.toString()
+            val contrasena = editTextContrasena.text.toString()
 
-            if (nombre.isNullOrBlank() || email.isNullOrBlank() || contrasena.isNullOrBlank()) {
+            if (nombre.isEmpty() || email.isEmpty() || contrasena.isEmpty()) {
                 mostrarMensaje("No pueden haber espacios vacios")
             } else if (contrasena.length < 6) {
                 mostrarMensaje("La contraseña no puede tener menos de 6 caracteres")
             } else {
-                registrarUsuario(nombre.toString(), email.toString(), contrasena.toString())
+                registrarUsuario(nombre, email, contrasena)
             }
         }
     }
-
 
     private fun registrarUsuario(nombre: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
+                    val databaseRef = db.reference.child("usuarios").child(auth.currentUser!!.uid)
+                    val usuario = Usuario(auth.currentUser!!.uid, nombre, email, password)
 
-
-
-                    val user = auth.currentUser
-                    if (user != null) {
-                        val usuario = Usuario(user.uid, nombre, email, password)
-
-                        firestore.collection("usuarios")
-                            .add(usuario)
-                            .addOnSuccessListener { documentReference ->
-                                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                            }
-                            .addOnFailureListener { e ->
-                                Log.w(TAG, "Error adding document", e)
-                            }
-                        updateUI(user)
+                    databaseRef.setValue(usuario).addOnCompleteListener(){
+                        if (it.isSuccessful){
+                            startMainActivity(auth.currentUser)
+                        }else{
+                            Log.w(TAG, "errorGuardarUsuarioEnRealtime", it.exception)
+                            mostrarMensaje("Error al guardar usuario en base")
+                        }
                     }
+
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -92,6 +86,7 @@ class RegistroActivity : AppCompatActivity() {
             }
     }
 
+
 /*
     private fun registrarUsuario(nombre: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
@@ -99,18 +94,24 @@ class RegistroActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
+
                     val user = auth.currentUser
                     if (user != null) {
                         val usuario = Usuario(user.uid, nombre, email, password)
-
+                        /*
                         firestore.collection("usuarios")
                             .add(usuario)
                             .addOnSuccessListener { documentReference ->
-                                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                                Log.d(
+                                    TAG,
+                                    "DocumentSnapshot added with ID: ${documentReference.id}"
+                                )
                             }
                             .addOnFailureListener { e ->
                                 Log.w(TAG, "Error adding document", e)
-                            }
+                            }*/
+
+
                         updateUI(user)
                     }
                 } else {
@@ -121,7 +122,7 @@ class RegistroActivity : AppCompatActivity() {
             }
     }
 */
-    private fun updateUI(user: FirebaseUser?) {
+    private fun startMainActivity(user: FirebaseUser?) {
         val i = Intent(this, MainActivity::class.java)
         startActivity(i)
     }

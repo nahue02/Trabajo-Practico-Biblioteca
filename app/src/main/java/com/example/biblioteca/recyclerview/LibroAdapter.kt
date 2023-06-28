@@ -18,8 +18,8 @@ class LibroAdapter : RecyclerView.Adapter<LibroAdapter.LibroViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LibroViewHolder {
         val view = LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.item, parent, false)
+            .from(parent.context)
+            .inflate(R.layout.item, parent, false)
         return LibroViewHolder(view)
     }
 
