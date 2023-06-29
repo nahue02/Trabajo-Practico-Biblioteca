@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.example.biblioteca.MainActivity
 import com.example.biblioteca.R
 import com.example.biblioteca.databinding.ActivityLoginBinding
+import com.example.biblioteca.recyclerview.RecyclerViewEjemplo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -65,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun reload() {
-        val i = Intent(this, MainActivity::class.java)
+        val i = Intent(this, RecyclerViewEjemplo::class.java)
         startActivity(i)
     }
 
@@ -90,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        val i = Intent(this, MainActivity::class.java)
+        val i = Intent(this, RecyclerViewEjemplo::class.java)
         startActivity(i)
     }
 

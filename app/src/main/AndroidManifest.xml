@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permisos de recepción de mensajes de Firebase Cloud Messaging -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +17,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Biblioteca"
         tools:targetApi="31">
+
+
+
+
+        <!-- Receptor para recibir mensajes de Firebase Cloud Messaging -->
+        <receiver
+            android:name="com.example.biblioteca.Messaging.MyFirebaseMessagingService"
+            android:exported="true"
+            tools:ignore="Instantiatable">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Servicio para recibir mensajes de Firebase Cloud Messaging -->
+        <service
+            android:name="com.example.biblioteca.Messaging.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name="com.example.biblioteca.recyclerview.RecyclerViewEjemplo" />
         <activity
             android:name=".authentication.LoginActivity"
             android:exported="true">

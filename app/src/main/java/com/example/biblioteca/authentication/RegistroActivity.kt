@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.example.biblioteca.MainActivity
 import com.example.biblioteca.R
 import com.example.biblioteca.databinding.ActivityRegistroBinding
+import com.example.biblioteca.recyclerview.RecyclerViewEjemplo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -91,7 +92,7 @@ class RegistroActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        val i = Intent(this, MainActivity::class.java)
+        val i = Intent(this, RecyclerViewEjemplo::class.java)
         startActivity(i)
     }
 
