@@ -20,21 +20,17 @@ class LoginActivity : AppCompatActivity() {
 
     //Declara una instancia de FirebaseAuth.
     private lateinit var auth: FirebaseAuth
-
-
     private lateinit var db: FirebaseDatabase
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        db = FirebaseDatabase.getInstance()
-
-        auth = Firebase.auth
-
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        db = FirebaseDatabase.getInstance()
+        auth = Firebase.auth
 
         //XML
         val buttonRegistrarse = binding.buttonRegistrarse
@@ -67,8 +63,7 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
-                    val user = auth.currentUser
-                    updateUI(user)
+                    updateUI()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
@@ -82,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun updateUI(user: FirebaseUser?) {
+    private fun updateUI() {
         val i = Intent(this, MainActivity::class.java)
         startActivity(i)
     }

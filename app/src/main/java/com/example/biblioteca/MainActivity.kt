@@ -15,70 +15,29 @@ import com.google.firebase.ktx.Firebase
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
-
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.hide()
+
         auth = Firebase.auth
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        val user = auth.currentUser
-
-        val toolbar = binding.toolbar
-        setSupportActionBar(toolbar)
-
-        drawerLayout = findViewById(R.id.drawer_layout)
-        navView = findViewById(R.id.nav_view)
-
-        val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar,
-            R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-
-        navView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_item1 -> {
-                    val intent = Intent(this, PerfilActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.nav_item2 -> {
-                    val intent = Intent(this, ConfiguracionActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.nav_item3 -> {
-                    FirebaseAuth.getInstance().signOut()
-                    irPantallaLogin()
-                    true
-                }
-                else -> false
-            }
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            irPantallaHome()
+            finish()
+        }else{
+            irPantallaLogin()
+            finish()
         }
-
-        val textViewEmail = binding.textViewEmail
-        textViewEmail.text = user?.displayName
-
     }
 
-    public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if (currentUser == null) {
-            irPantallaLogin()
-        }
+    private fun irPantallaHome(){
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
 
     private fun irPantallaLogin() {
@@ -86,13 +45,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
 }
 
 

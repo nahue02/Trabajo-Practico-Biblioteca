@@ -1,7 +1,11 @@
 package com.example.biblioteca
 
+import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import com.example.biblioteca.databinding.ActivityConfiguracionBinding
 import com.example.biblioteca.databinding.ActivityPerfilBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -35,64 +39,53 @@ class ConfiguracionActivity : AppCompatActivity() {
         auth = Firebase.auth
         db = FirebaseDatabase.getInstance()
 
-        val user = auth.currentUser
-        val userRef = db.reference.child("usuarios").child(user!!.uid)
-
         buttonActualizarDatos.setOnClickListener {
+            val user = auth.currentUser
+            val userRef = db.reference.child("usuarios").child(user!!.uid)
+
             val nombre = editTextNombre.text.toString()
             val email = editTextEmail.text.toString()
             val contrasena = editTextContrasena.text.toString()
 
-            actualizarUsuarioAuthentication(user, email, contrasena)
-            actualizarUsuarioDatabase(userRef, nombre, email, contrasena)
+            if (nombre.isEmpty() || email.isEmpty() || contrasena.isEmpty()) {
+                mostrarMensaje("No pueden haber espacios vacios")
+            } else if (contrasena.length < 6) {
+                mostrarMensaje("La contraseña no puede tener menos de 6 caracteres")
+            } else {
+                val profileUpdatesDatabase = hashMapOf<String, Any>(
+                    "nombre" to nombre,
+                    "email" to email,
+                    "contrasena" to contrasena
+                )
+
+                userRef.updateChildren(profileUpdatesDatabase)
+
+                user.updatePassword(contrasena)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "User password updated.")
+                        }
+                    }
+
+                user.updateEmail(email)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "User email address updated.")
+                        }
+                    }
+
+
+            }
         }
 
     }
 
-    private fun actualizarUsuarioDatabase(
-        userRef: DatabaseReference,
-        newName: String,
-        newEmail: String,
-        newPassword: String
-    ) {
 
-        val profileUpdatesDatabase = hashMapOf<String, Any>(
-            "nombre" to newName,
-            "email" to newEmail,
-            "contrasena" to newPassword
-        )
+    private fun mostrarMensaje(mensaje: String) {
+        val duration = Toast.LENGTH_SHORT
 
-        userRef.updateChildren(profileUpdatesDatabase)
+        val toast = Toast.makeText(this, mensaje, duration)
+        toast.show()
     }
 
-    private fun actualizarUsuarioAuthentication(
-        user: FirebaseUser?,
-        newEmail: String,
-        newPassword: String
-    ) {
-        editarEmail(user, newEmail)
-        editarContrasena(user, newPassword)
-    }
-
-    private fun editarEmail(user: FirebaseUser?, newEmail: String) {
-        user?.updateEmail(newEmail)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Actualización del email exitosa
-                } else {
-                    // Error al actualizar el email
-                }
-            }
-    }
-
-    private fun editarContrasena(user: FirebaseUser?, newPassword: String) {
-        user?.updatePassword(newPassword)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Actualización de la contraseña exitosa
-                } else {
-                    // Error al actualizar la contraseña
-                }
-            }
-    }
 }
