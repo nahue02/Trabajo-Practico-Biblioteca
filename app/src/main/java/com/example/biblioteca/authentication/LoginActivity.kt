@@ -66,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun reload() {
-        val i = Intent(this, RecyclerViewEjemplo::class.java)
+        val i = Intent(this, MainActivity::class.java)
         startActivity(i)
     }
 
@@ -91,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        val i = Intent(this, RecyclerViewEjemplo::class.java)
+        val i = Intent(this, MainActivity::class.java)
         startActivity(i)
     }
 

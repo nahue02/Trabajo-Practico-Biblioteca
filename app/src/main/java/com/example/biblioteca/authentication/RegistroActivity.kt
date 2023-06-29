@@ -92,7 +92,7 @@ class RegistroActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        val i = Intent(this, RecyclerViewEjemplo::class.java)
+        val i = Intent(this, MainActivity::class.java)
         startActivity(i)
     }
 
