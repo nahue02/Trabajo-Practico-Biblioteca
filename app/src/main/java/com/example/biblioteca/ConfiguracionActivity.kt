@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
@@ -35,7 +36,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         db = FirebaseDatabase.getInstance()
 
         val user = auth.currentUser
-        val userRef = db.reference.child("users").child(user!!.uid)
+        val userRef = db.reference.child("usuarios").child(user!!.uid)
 
         buttonActualizarDatos.setOnClickListener {
             val nombre = editTextNombre.text.toString()
@@ -43,25 +44,26 @@ class ConfiguracionActivity : AppCompatActivity() {
             val contrasena = editTextContrasena.text.toString()
 
             actualizarUsuarioAuthentication(user, email, contrasena)
-            actualizarUsuarioDatabase(userRef, nombre, email)
+            actualizarUsuarioDatabase(userRef, nombre, email, contrasena)
         }
-
 
     }
 
     private fun actualizarUsuarioDatabase(
-        userRef: FirebaseDatabase,
+        userRef: DatabaseReference,
         newName: String,
-        newEmail: String
+        newEmail: String,
+        newPassword: String
     ) {
 
         val profileUpdatesDatabase = hashMapOf<String, Any>(
-            "username" to newName,
+            "nombre" to newName,
+            "email" to newEmail,
+            "contrasena" to newPassword
         )
 
         userRef.updateChildren(profileUpdatesDatabase)
     }
-
 
     private fun actualizarUsuarioAuthentication(
         user: FirebaseUser?,
