@@ -1,48 +1,37 @@
 package com.example.biblioteca.recyclerview
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.biblioteca.R
 
+class LibroAdapter(private val libros: List<Libro>) : RecyclerView.Adapter<LibroAdapter.ViewHolder>() {
 
-class LibroAdapter : RecyclerView.Adapter<LibroAdapter.LibroViewHolder>() {
-
-    var libros = listOf<Libro>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LibroViewHolder {
-        val view = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.item, parent, false)
-        return LibroViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_libro, parent, false)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: LibroViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val libro = libros[position]
-        holder.bind(libro)
+        holder.imagenImageView.setImageResource(libro.imagen)
+
+        holder.imagenImageView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, DetalleLibroActivity::class.java)
+            intent.putExtra("libro", libro) // Pasar el libro seleccionado a la actividad de detalle
+            holder.itemView.context.startActivity(intent)
+        }
     }
 
-    override fun getItemCount() = libros.size
+    override fun getItemCount(): Int {
+        return libros.size
+    }
 
-    class LibroViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        val title: TextView = view.findViewById(R.id.libro_title)
-        val description: TextView = view.findViewById(R.id.libro_description)
-        val genero: TextView = view.findViewById(R.id.libro_genero)
-        val autor: TextView = view.findViewById(R.id.libro_autor)
-
-        fun bind(libro: Libro) {
-            title.text = libro.titulo
-            description.text = libro.descripcion
-            genero.text = libro.genero
-            autor.text = libro.autor
-
-        }
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imagenImageView: ImageView = itemView.findViewById(R.id.imagenImageView)
     }
 }
+

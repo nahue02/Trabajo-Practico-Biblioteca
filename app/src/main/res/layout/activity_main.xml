@@ -6,28 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp"
-        >
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textViewEmail"
-            android:textSize="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Texto"
-            />
-
-        <Button
-            android:id="@+id/buttonSalir"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Salir" />
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
