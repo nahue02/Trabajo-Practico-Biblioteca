@@ -13,24 +13,26 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 
 class PerfilActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityPerfilBinding
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil)
 
-
-
         binding = ActivityPerfilBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val actionBar = binding.toolbarWithBackButton
+        setSupportActionBar(actionBar)
+        supportActionBar?.title = "Perfil"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val textViewNombre = binding.perfilNombre
         val textViewEmail = binding.perfilEmail
+        val textViewUID = binding.perfilUID
 
         auth = Firebase.auth
         db = FirebaseDatabase.getInstance()
@@ -40,20 +42,16 @@ class PerfilActivity : AppCompatActivity() {
 
         userRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Obtener los datos del perfil del usuario
                 val username = snapshot.child("nombre").getValue(String::class.java)
                 val email = snapshot.child("email").getValue(String::class.java)
+                val id = snapshot.child("id").getValue(String::class.java)
 
-                // Actualizar la interfaz de usuario con los datos del perfil
-                // ...
-
-                // Ejemplo: Mostrar los datos del perfil en los campos de texto
                 textViewNombre.text = username
                 textViewEmail.text = email
+                textViewUID.text = id
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Manejar el error en caso de que ocurra
             }
         })
 

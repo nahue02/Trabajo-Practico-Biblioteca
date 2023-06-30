@@ -49,7 +49,6 @@ class HomeActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_item1 -> {
@@ -91,9 +90,6 @@ class HomeActivity : AppCompatActivity() {
             }
         })
     }
-
-
-
 
     private fun irPantallaLogin() {
         val intent = Intent(this, LoginActivity::class.java)

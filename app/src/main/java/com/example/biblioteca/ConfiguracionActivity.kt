@@ -31,6 +31,11 @@ class ConfiguracionActivity : AppCompatActivity() {
         binding = ActivityConfiguracionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val actionBar = binding.toolbarWithBackButton
+        setSupportActionBar(actionBar)
+        supportActionBar?.title = "Editar Usuario"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         auth = Firebase.auth
         db = FirebaseDatabase.getInstance()
 
@@ -55,6 +60,7 @@ class ConfiguracionActivity : AppCompatActivity() {
                     "nombre" to nombre,
                 )
                 userRef.updateChildren(profileUpdatesDatabase)
+                mostrarMensaje("Se actualizó su nombre correctamente")
             }
         }
 
@@ -76,6 +82,7 @@ class ConfiguracionActivity : AppCompatActivity() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             Log.d(TAG, "User email address updated.")
+                            mostrarMensaje("Se actualizó su email correctamente")
                         }
                     }
             }
@@ -102,13 +109,13 @@ class ConfiguracionActivity : AppCompatActivity() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             Log.d(TAG, "User password updated.")
+                            mostrarMensaje("Se actualizó su contraseña correctamente")
                         }
                     }
             }
         }
 
     }
-
 
     private fun mostrarMensaje(mensaje: String) {
         val duration = Toast.LENGTH_SHORT

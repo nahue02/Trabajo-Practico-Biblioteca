@@ -37,6 +37,12 @@ class RegistroActivity : AppCompatActivity() {
         auth = Firebase.auth
         db = FirebaseDatabase.getInstance()
 
+
+        val actionBar = binding.toolbarWithBackButton
+        setSupportActionBar(actionBar)
+        supportActionBar?.title = "Registrarse"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val editTextNombre = binding.editTextNombre
         val editTextEmail = binding.editTextEmailRegistro
         val editTextContrasena = binding.editTextContrasenaRegistro
@@ -69,6 +75,7 @@ class RegistroActivity : AppCompatActivity() {
 
                     databaseRef.setValue(usuario).addOnCompleteListener(){
                         if (it.isSuccessful){
+                            mostrarMensaje("Se registró el usuario")
                             startMainActivity(auth.currentUser)
                         }else{
                             Log.w(TAG, "errorGuardarUsuarioEnRealtime", it.exception)
