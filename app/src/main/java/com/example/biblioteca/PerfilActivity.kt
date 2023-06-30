@@ -24,6 +24,8 @@ class PerfilActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil)
 
+
+
         binding = ActivityPerfilBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -34,8 +36,8 @@ class PerfilActivity : AppCompatActivity() {
         db = FirebaseDatabase.getInstance()
 
         val userId = auth.currentUser?.uid
-
         val userRef = db.reference.child("usuarios").child(userId!!)
+
         userRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 // Obtener los datos del perfil del usuario

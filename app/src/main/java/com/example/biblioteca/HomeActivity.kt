@@ -8,15 +8,19 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.biblioteca.authentication.LoginActivity
 import com.example.biblioteca.databinding.ActivityHomeBinding
-import com.example.biblioteca.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseDatabase
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
@@ -26,6 +30,8 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         auth = Firebase.auth
+        db = FirebaseDatabase.getInstance()
+
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -68,9 +74,25 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        val textViewEmail = binding.textViewEmail
-        textViewEmail.text = "Nombre"
+        val textViewNombre = binding.textViewNombre
+
+        val userId = auth.currentUser?.uid
+        val userRef = db.reference.child("usuarios").child(userId!!)
+
+        userRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // Obtener los datos del perfil del usuario
+                val username = snapshot.child("nombre").getValue(String::class.java)
+                textViewNombre.text = username
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Manejar el error en caso de que ocurra
+            }
+        })
     }
+
+
 
 
     private fun irPantallaLogin() {
