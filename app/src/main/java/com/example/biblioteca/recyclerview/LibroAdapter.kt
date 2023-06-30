@@ -34,3 +34,4 @@ class LibroAdapter(private val libros: List<Libro>) : RecyclerView.Adapter<Libro
         val imagenImageView: ImageView = itemView.findViewById(R.id.imagenImageView)
     }
 }
+

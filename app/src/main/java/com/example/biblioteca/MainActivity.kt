@@ -1,7 +1,10 @@
 package com.example.biblioteca
 
+import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.biblioteca.recyclerview.GeneroAdapter
@@ -12,6 +15,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+
+import android.util.Log
+import android.widget.Button
+import android.widget.TextView
+import com.example.biblioteca.authentication.LoginActivity
+import com.google.firebase.ktx.Firebase
+
 
 
 class MainActivity : AppCompatActivity(), GenerosCallback {
@@ -28,11 +38,13 @@ class MainActivity : AppCompatActivity(), GenerosCallback {
         getGeneros()
     }
 
+
+
     override fun onGenerosObtenidos(generos: List<String>) {
         val generosDistinct = generos.distinct().toMutableList()
         generosDistinct.remove("General")
         generosDistinct.add(0, "General")
-
+        
         runOnUiThread {
             recyclerView.adapter = GeneroAdapter(generosDistinct, this)
         }
@@ -66,3 +78,4 @@ class MainActivity : AppCompatActivity(), GenerosCallback {
         })
     }
 }
+
