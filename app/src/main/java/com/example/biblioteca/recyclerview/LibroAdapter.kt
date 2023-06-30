@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.biblioteca.DetalleLibroActivity
 import com.example.biblioteca.R
 
 class LibroAdapter(private val libros: List<Libro>) : RecyclerView.Adapter<LibroAdapter.ViewHolder>() {
