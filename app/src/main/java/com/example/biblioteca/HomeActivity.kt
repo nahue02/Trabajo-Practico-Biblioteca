@@ -6,8 +6,11 @@ import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.biblioteca.authentication.LoginActivity
 import com.example.biblioteca.databinding.ActivityHomeBinding
+import com.example.biblioteca.recyclerview.GeneroAdapter
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -25,6 +28,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
 
+    private lateinit var recyclerView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -34,6 +39,13 @@ class HomeActivity : AppCompatActivity() {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        //recyclerView
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        getGeneros()
 
         val toolbar = binding.toolbar
         setSupportActionBar(toolbar)
@@ -102,5 +114,48 @@ class HomeActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    fun onGenerosObtenidos(generos: List<String>) {
+        val generosDistinct = generos.distinct().toMutableList()
+        generosDistinct.remove("General")
+        generosDistinct.add(0, "General")
+
+        runOnUiThread {
+            recyclerView.adapter = GeneroAdapter(generosDistinct, this)
+        }
+    }
+
+    private fun getGeneros() {
+        val database = FirebaseDatabase.getInstance().reference.child("libros")
+
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val generos = mutableListOf<String>()
+
+                for (libroSnapshot in snapshot.children) {
+                    val genero = libroSnapshot.child("genero").getValue(String::class.java)
+                    genero?.let {
+                        generos.add(it)
+                    }
+                }
+
+                generos.distinct().toMutableList().apply {
+                    remove("General")
+                    add(0, "General")
+                }
+
+                onGenerosObtenidos(generos)
+            }
+
+
+
+            override fun onCancelled(error: DatabaseError) {
+                // Manejar el error de lectura de la base de datos si es necesario
+            }
+
+        })
+
+
     }
 }

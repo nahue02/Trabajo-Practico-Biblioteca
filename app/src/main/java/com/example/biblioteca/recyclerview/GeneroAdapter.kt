@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.biblioteca.HomeActivity
 import com.example.biblioteca.MainActivity
 import com.example.biblioteca.R
 import com.google.firebase.database.DataSnapshot
@@ -14,7 +15,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class GeneroAdapter(private val generos: List<String>, private val context: MainActivity) :
+class GeneroAdapter(private val generos: List<String>, private val context: HomeActivity) :
     RecyclerView.Adapter<GeneroAdapter.ViewHolder>() {
 
     private val database = FirebaseDatabase.getInstance().reference.child("libros")
