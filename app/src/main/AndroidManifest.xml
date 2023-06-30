@@ -17,7 +17,21 @@
         <activity android:name=".recyclerview.DetalleLibroActivity" />
 
         <activity
+            android:name=".HomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ConfiguracionActivity"
+            android:exported="true"
+            android:parentActivityName=".HomeActivity"/>
+        <activity
+            android:name=".PerfilActivity"
+            android:exported="true"
+            android:parentActivityName=".HomeActivity"/>
+        <activity
             android:name=".authentication.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,13 +39,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+
         <activity
             android:name=".authentication.RegistroActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"
+            android:parentActivityName=".authentication.LoginActivity"/>
 
         <service
             android:name="com.example.biblioteca.Messaging.MyFirebaseMessagingService"

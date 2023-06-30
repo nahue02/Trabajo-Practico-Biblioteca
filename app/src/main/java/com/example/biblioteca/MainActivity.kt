@@ -1,81 +1,50 @@
 package com.example.biblioteca
 
-import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.biblioteca.recyclerview.GeneroAdapter
-import com.example.biblioteca.recyclerview.GenerosCallback
-import com.example.biblioteca.recyclerview.Libro
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.biblioteca.authentication.LoginActivity
+import com.example.biblioteca.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
-
-class MainActivity : AppCompatActivity(), GenerosCallback {
-
-    private lateinit var recyclerView: RecyclerView
+class MainActivity : AppCompatActivity() {
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        supportActionBar?.hide()
 
-        getGeneros()
-    }
+        auth = Firebase.auth
 
-
-
-    override fun onGenerosObtenidos(generos: List<String>) {
-        val generosDistinct = generos.distinct().toMutableList()
-        generosDistinct.remove("General")
-        generosDistinct.add(0, "General")
-        
-        runOnUiThread {
-            recyclerView.adapter = GeneroAdapter(generosDistinct, this)
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            irPantallaHome()
+            finish()
+        }else{
+            irPantallaLogin()
+            finish()
         }
     }
 
-    private fun getGeneros() {
-        val database = FirebaseDatabase.getInstance().reference.child("libros")
-
-        database.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val generos = mutableListOf<String>()
-
-                for (libroSnapshot in snapshot.children) {
-                    val genero = libroSnapshot.child("genero").getValue(String::class.java)
-                    genero?.let {
-                        generos.add(it)
-                    }
-                }
-
-                generos.distinct().toMutableList().apply {
-                    remove("General")
-                    add(0, "General")
-                }
-
-                onGenerosObtenidos(generos)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Manejar el error de lectura de la base de datos si es necesario
-            }
-        })
+    private fun irPantallaHome(){
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
+
+    private fun irPantallaLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+    }
+
 }
+
 
