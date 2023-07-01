@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.example.biblioteca.HomeActivity
 import com.example.biblioteca.MainActivity
 import com.example.biblioteca.R
 import com.example.biblioteca.authentication.data.Usuario
@@ -93,7 +94,7 @@ class RegistroActivity : AppCompatActivity() {
 
 
     private fun startMainActivity(user: FirebaseUser?) {
-        val i = Intent(this, MainActivity::class.java)
+            val i = Intent(this, HomeActivity::class.java)
         startActivity(i)
     }
 

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.example.biblioteca.HomeActivity
 import com.example.biblioteca.MainActivity
 import com.example.biblioteca.R
 import com.example.biblioteca.databinding.ActivityLoginBinding
@@ -69,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
                     Toast.makeText(
                         baseContext,
-                        "Authentication failed.",
+                        "Error al iniciar sesión.",
                         Toast.LENGTH_SHORT,
                     ).show()
                 }
@@ -78,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
-        val i = Intent(this, MainActivity::class.java)
+        val i = Intent(this, HomeActivity::class.java)
         startActivity(i)
     }
 
