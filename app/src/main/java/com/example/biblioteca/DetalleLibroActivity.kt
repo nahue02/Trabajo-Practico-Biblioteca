@@ -11,7 +11,6 @@ import com.example.biblioteca.recyclerview.Libro
 
 class DetalleLibroActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetalleLibroBinding
-    private lateinit var toolBar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
