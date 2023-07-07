@@ -20,6 +20,12 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+        <ImageView
+            android:id="@+id/portadaView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:srcCompat="@tools:sample/avatars" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,16 +36,16 @@
                 android:id="@+id/tituloTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/autorTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:textAppearanceSmall"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:textAppearance="?android:textAppearanceSmall" />
 
             <TextView
                 android:id="@+id/descripcionTextView"

@@ -8,7 +8,7 @@ data class Libro(
     val autor: String,
     val descripcion: String,
     val genero: String,
-    val imagen: Int
+    val imagen: String
     ) : Serializable
 
 
