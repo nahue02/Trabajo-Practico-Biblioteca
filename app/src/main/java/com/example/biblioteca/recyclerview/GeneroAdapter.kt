@@ -46,7 +46,7 @@ class GeneroAdapter(private val generos: List<String>, private val context: Home
                     val titulo = libroSnapshot.child("titulo").getValue(String::class.java)
                     val autor = libroSnapshot.child("autor").getValue(String::class.java)
                     val descripcion = libroSnapshot.child("descripcion").getValue(String::class.java)
-                    val imagen = libroSnapshot.child("imagen").getValue(Int::class.java)
+                    val imagen = libroSnapshot.child("imagen").getValue(String::class.java)
 
                     titulo?.let { titulo ->
                         autor?.let { autor ->
