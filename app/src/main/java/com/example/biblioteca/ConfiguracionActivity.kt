@@ -47,9 +47,10 @@ class ConfiguracionActivity : AppCompatActivity() {
         val buttonActualizarEmail = binding.buttonActualizarEmail
         val buttonActualizarContrasena = binding.buttonActualizarContrasena
 
+        val user = auth.currentUser
+        val userRef = db.reference.child("usuarios").child(user!!.uid)
+
         buttonActualizarNombre.setOnClickListener {
-            val user = auth.currentUser
-            val userRef = db.reference.child("usuarios").child(user!!.uid)
 
             val nombre = editTextNombre.text.toString()
 
@@ -59,14 +60,18 @@ class ConfiguracionActivity : AppCompatActivity() {
                 val profileUpdatesDatabase = hashMapOf<String, Any>(
                     "nombre" to nombre,
                 )
-                userRef.updateChildren(profileUpdatesDatabase)
-                mostrarMensaje("Se actualizó su nombre correctamente")
+                userRef.updateChildren(profileUpdatesDatabase).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        mostrarMensaje("Se actualizó su nombre correctamente")
+                    } else {
+                        mostrarMensaje("Hubo un error de conexión")
+                    }
+                }
+
             }
         }
 
         buttonActualizarEmail.setOnClickListener {
-            val user = auth.currentUser
-            val userRef = db.reference.child("usuarios").child(user!!.uid)
 
             val email = editTextEmail.text.toString()
 
@@ -76,21 +81,22 @@ class ConfiguracionActivity : AppCompatActivity() {
                 val profileUpdatesDatabase = hashMapOf<String, Any>(
                     "email" to email,
                 )
-                userRef.updateChildren(profileUpdatesDatabase)
+
 
                 user.updateEmail(email)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
+                            userRef.updateChildren(profileUpdatesDatabase)
                             Log.d(TAG, "User email address updated.")
                             mostrarMensaje("Se actualizó su email correctamente")
+                        } else {
+                            mostrarMensaje("Hubo un error de conexion")
                         }
                     }
             }
         }
 
         buttonActualizarContrasena.setOnClickListener {
-            val user = auth.currentUser
-            val userRef = db.reference.child("usuarios").child(user!!.uid)
 
             val contrasena = editTextContrasena.text.toString()
 
@@ -103,13 +109,14 @@ class ConfiguracionActivity : AppCompatActivity() {
                     "contrasena" to contrasena
                 )
 
-                userRef.updateChildren(profileUpdatesDatabase)
-
                 user.updatePassword(contrasena)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
+                            userRef.updateChildren(profileUpdatesDatabase)
                             Log.d(TAG, "User password updated.")
                             mostrarMensaje("Se actualizó su contraseña correctamente")
+                        } else {
+                            mostrarMensaje("Hubo un error de conexion")
                         }
                     }
             }
